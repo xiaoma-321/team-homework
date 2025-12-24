@@ -1,3 +1,10 @@
+import collections
+import collections.abc
+collections.Container = collections.abc.Container
+collections.Iterable = collections.abc.Iterable
+collections.MutableSet = collections.abc.MutableSet
+collections.MutableMapping = collections.abc.MutableMapping
+collections.Mapping = collections.abc.Mapping
 from flask import Flask, render_template, session, redirect, url_for, flash, request, jsonify
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -116,7 +123,11 @@ class ReadBook(db.Model):
 
 @login_manager.user_loader
 def load_user(admin_id):
-    return Admin.query.get(int(admin_id))
+    # if admin_id.isdigit():
+    #     return Admin.query.get(int(admin_id))
+    # else:
+    #     return Admin.query.filter_by(username=admin_id).first()
+    return Admin.query.get(admin_id)
 
 
 @app.route('/', methods=['GET', 'POST'])
